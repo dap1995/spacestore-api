@@ -15,7 +15,7 @@ defmodule Spacestore.Tracking.StoreCoordinate do
   @doc false
   def changeset(store_coordinate, attrs) do
     store_coordinate
-    |> cast(attrs, [:latitude, :longitude])
-    |> validate_required([:latitude, :longitude])
+    |> cast(attrs, [:latitude, :longitude, :store_id])
+    |> validate_required([:latitude, :longitude, :store_id])
   end
 end
