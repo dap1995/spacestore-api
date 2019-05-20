@@ -27,6 +27,13 @@ defmodule SpacestoreWeb.Schema do
       resolve(&StoreResolver.find/2)
     end
 
+    field :stores_by_distance, non_null(list_of(non_null(:store))) do
+      arg :latitude, non_null(:float)
+      arg :longitude, non_null(:float)
+      arg :distance, :float, default_value: 10
+      resolve &StoreResolver.stores_by_distance/2
+    end
+
     mutation do
       field :create_user, type: :user do
         arg(:name, non_null(:string))

@@ -11,6 +11,15 @@ defmodule SpacestoreWeb.StoreResolver do
     {:error, "Not Authorized"}
   end
 
+  def stores_by_distance(args, %{context: %{current_user: _current_user}}) do
+    stores = Business.list_stores_by_distance(args, [:owner, :address, :coordinate])
+    {:ok, stores}
+  end
+
+  def stores_by_distance(_args, _info) do
+    {:error, "Not Authorized"}
+  end
+
   def find(%{name: name}, _info) do
     case Business.get_store_by_name(name) do
       nil -> {:error, "Store #{name} not found!"}

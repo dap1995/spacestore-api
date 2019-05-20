@@ -8,6 +8,66 @@ defmodule Spacestore.Business do
 
   alias Spacestore.Business.Store
 
+
+  @query_by_distance """
+  SELECT
+    stores.id,
+    stores.name,
+    stores.description,
+    stores.email,
+    stores.document,
+    stores.inserted_at,
+    stores.updated_at,
+    stores.owner_id,
+    (
+      6371 * acos (
+        cos(radians(?))
+        * cos(radians(store_coordinates.latitude))
+        * cos(radians(store_coordinates.longitude) - radians(?))
+        + sin (radians(?))
+        * sin(radians(store_coordinates.latitude))
+      )
+    ) AS distance
+  FROM stores left join store_coordinates
+  ON stores.id = store_coordinates.store_id
+  HAVING distance < ?
+  ORDER BY distance;
+  """
+
+  @doc """
+  Returns the list of stores with preloaded associations based on distance.
+
+    Example:
+      > Spacestore.Business.list_stores_by_distance(%{
+          latitude: -26.4885497, longitude: -49.0769937
+        }, [])
+
+  """
+  def list_stores_by_distance(coordinates, preload) do
+    query_stores_by_distance(coordinates)
+    |> load_stores
+    |> Spacestore.Repo.preload(preload)
+  end
+
+  defp load_stores(raw_query_result) do
+    Enum.map(
+      raw_query_result.rows,
+      &Spacestore.Repo.load(
+        Spacestore.Business.Store, {raw_query_result.columns, &1}
+      )
+    )
+  end
+
+  defp query_stores_by_distance(
+    %{ latitude: latitude, longitude: longitude, distance: distance_km }
+  ) do
+    Ecto.Adapters.SQL.query!(
+      Spacestore.Repo,
+      @query_by_distance,
+      [latitude, longitude, latitude, distance_km]
+    )
+  end
+
   @doc """
   Returns the list of stores.
 
