@@ -19,16 +19,16 @@ defmodule SpacestoreWeb.Context do
 
   defp build_context(conn) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-        {:ok, current_user} <- authorize(token)
+        {:ok, claims} = Spacestore.Guardian.decode_and_verify(token),
+        {:ok, current_user} <- get_user(claims["sub"])
     do
       {:ok, %{current_user: current_user, token: token}}
     end
   end
 
-  defp authorize(token) do
+  defp get_user(id) do
     User
-    |> where(token: ^token)
-    |> Repo.one()
+    |> Repo.get(id)
     |> case do
       nil -> {:error, "Invalid authorization token"}
       user -> {:ok, user}
