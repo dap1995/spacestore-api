@@ -40,6 +40,8 @@ defmodule Spacestore.Business do
   """
   def get_store!(id), do: Repo.get!(Store, id)
 
+  def get_store(id), do: Repo.get(Store, id)
+
   def get_store_by_name(name), do: Repo.get_by(Store, name: name)
 
   @doc """

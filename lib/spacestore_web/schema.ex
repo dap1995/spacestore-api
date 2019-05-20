@@ -5,6 +5,7 @@ defmodule SpacestoreWeb.Schema do
 
   alias SpacestoreWeb.UserResolver
   alias SpacestoreWeb.StoreResolver
+  alias SpacestoreWeb.StoreAddressResolver
 
   query do
     field :users, list_of(:user) do
@@ -45,6 +46,19 @@ defmodule SpacestoreWeb.Schema do
         arg(:description, non_null(:string))
         arg(:document, non_null(:string))
         resolve(&StoreResolver.create/2)
+      end
+
+      field :create_store_address, type: :store_address do
+        arg(:cep, non_null(:string))
+        arg(:city, non_null(:string))
+        arg(:complement, non_null(:string))
+        arg(:neighborhood, non_null(:string))
+        arg(:number, non_null(:integer))
+        arg(:street, non_null(:string))
+        arg(:uf, non_null(:string))
+        arg(:store_id, non_null(:id))
+        
+        resolve(&StoreAddressResolver.create/2)
       end
     end
   end

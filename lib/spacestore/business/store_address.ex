@@ -20,7 +20,7 @@ defmodule Spacestore.Business.StoreAddress do
   @doc false
   def changeset(store_address, attrs) do
     store_address
-    |> cast(attrs, [:cep, :neighborhood, :city, :street, :uf, :number, :complement])
-    |> validate_required([:cep, :neighborhood, :city, :street, :uf, :number, :complement])
+    |> cast(attrs, [:cep, :neighborhood, :city, :street, :uf, :number, :complement, :store_id])
+    |> validate_required([:cep, :neighborhood, :city, :street, :uf, :number, :complement, :store_id])
   end
 end

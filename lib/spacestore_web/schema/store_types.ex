@@ -6,17 +6,19 @@ defmodule SpacestoreWeb.Schema.StoreTypes do
     field(:name, :string)
     field(:email, :string)
     field(:document, :string)
-    field(:address, :address)
-    field(:coordinate, :coordinate)
+    field(:address, :store_address)
+    field(:coordinate, :store_coordinate)
     field(:owner, :user)
   end
 
-  object :coordinate do
+  object :store_coordinate do
+    field :id, :id
     field :latitude, :string
     field :longitude, :string
   end
 
-  object :address do
+  object :store_address do
+    field :id, :id
     field :cep, :string
     field :city, :string
     field :complement, :string
