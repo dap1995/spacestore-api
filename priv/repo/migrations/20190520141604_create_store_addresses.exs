@@ -16,5 +16,6 @@ defmodule Spacestore.Repo.Migrations.CreateStoreAddresses do
     end
 
     create index(:store_addresses, [:store_id])
+    create unique_index(:store_addresses, [:store_id], name: :unique_store)
   end
 end

@@ -17,5 +17,6 @@ defmodule Spacestore.Tracking.StoreCoordinate do
     store_coordinate
     |> cast(attrs, [:latitude, :longitude, :store_id])
     |> validate_required([:latitude, :longitude, :store_id])
+    |> unique_constraint(:unique_store_constraint, name: :unique_store)
   end
 end

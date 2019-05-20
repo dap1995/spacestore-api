@@ -22,5 +22,6 @@ defmodule Spacestore.Business.StoreAddress do
     store_address
     |> cast(attrs, [:cep, :neighborhood, :city, :street, :uf, :number, :complement, :store_id])
     |> validate_required([:cep, :neighborhood, :city, :street, :uf, :number, :complement, :store_id])
+    |> unique_constraint(:unique_store_constraint, name: :unique_store)
   end
 end
