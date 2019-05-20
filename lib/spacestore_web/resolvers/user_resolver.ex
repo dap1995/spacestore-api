@@ -36,4 +36,13 @@ defmodule SpacestoreWeb.UserResolver do
       {:ok, %{token: jwt}}
     end
   end
+
+  def logout(_args,  %{context: %{current_user: current_user, token: _token}}) do
+    Account.store_token(current_user, nil)
+    {:ok, current_user}
+  end
+
+  def logout(_args, _info) do
+    {:error, "Please log in first!"}
+  end
 end

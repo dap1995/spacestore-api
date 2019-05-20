@@ -69,6 +69,10 @@ defmodule SpacestoreWeb.Schema do
         
         resolve(&StoreCoordinateResolver.create/2)
       end
+
+      field :sign_out, type: :user do
+        resolve(&UserResolver.logout/2)
+      end
     end
   end
 end
