@@ -30,4 +30,14 @@ defmodule SpacestoreWeb.ErrorHelpers do
       Gettext.dgettext(SpacestoreWeb.Gettext, "errors", msg, opts)
     end
   end
+
+  def error_from_changeset_to_string(changeset) do
+    result = changeset.errors
+    |> Enum.map(fn {k, v} ->
+      "#{Phoenix.Naming.humanize(k)} #{SpacestoreWeb.ErrorHelpers.translate_error(v)}"
+    end)
+    |> Enum.join(". ")
+    IO.inspect result
+    result
+  end
 end
