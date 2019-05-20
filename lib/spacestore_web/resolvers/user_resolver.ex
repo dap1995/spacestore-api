@@ -2,10 +2,13 @@
 defmodule SpacestoreWeb.UserResolver do
   alias Spacestore.Account
   alias SpacestoreWeb.ErrorHelpers
-  import Comeonin.Bcrypt, only: [checkpw: 2]
+
+  def all(_args, %{context: %{current_user: _current_user}}) do
+    {:ok, Account.list_users()}
+  end
 
   def all(_args, _info) do
-    {:ok, Account.list_users()}
+    {:error, "Not Authorized"}
   end
 
   def find(%{email: email}, _info) do

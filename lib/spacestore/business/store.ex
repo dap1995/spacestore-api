@@ -13,7 +13,7 @@ defmodule Spacestore.Business.Store do
     
     belongs_to :owner, User
     has_one :address, StoreAddress
-    has_one :coordinate, StoreCoordinates
+    has_one :coordinate, StoreCoordinate
 
     timestamps()
   end

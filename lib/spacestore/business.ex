@@ -18,7 +18,10 @@ defmodule Spacestore.Business do
 
   """
   def list_stores do
-    Repo.all(Store)
+    result = Repo.all(Store)
+      |> Repo.preload([:owner, :address, :coordinate])
+    IO.inspect result
+    result
   end
 
   @doc """
@@ -37,6 +40,8 @@ defmodule Spacestore.Business do
   """
   def get_store!(id), do: Repo.get!(Store, id)
 
+  def get_store_by_name(name), do: Repo.get_by(Store, name: name)
+
   @doc """
   Creates a store.
 
@@ -49,8 +54,8 @@ defmodule Spacestore.Business do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_store(attrs \\ %{}) do
-    %Store{}
+  def create_store(attrs \\ %{}, current_user) do
+    %Store{owner: current_user}
     |> Store.changeset(attrs)
     |> Repo.insert()
   end
