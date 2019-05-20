@@ -2,6 +2,7 @@
 defmodule SpacestoreWeb.UserResolver do
   alias Spacestore.Account
   alias SpacestoreWeb.ErrorHelpers
+  import Comeonin.Bcrypt, only: [checkpw: 2]
 
   def all(_args, _info) do
     {:ok, Account.list_users()}
@@ -22,6 +23,14 @@ defmodule SpacestoreWeb.UserResolver do
         {:error, ErrorHelpers.error_from_changeset_to_string(error)}
       error ->
         {:error, "could not create user"}
+    end
+  end
+
+  def login(%{email: email, password: password}, _info) do
+    with {:ok, user} <- Account.login_with_email_pass(email, password),
+         {:ok, jwt, _} <- Spacestore.Guardian.encode_and_sign(user),
+         {:ok, _ } <- Spacestore.Account.store_token(user, jwt) do
+      {:ok, %{token: jwt}}
     end
   end
 end

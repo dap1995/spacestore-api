@@ -7,7 +7,7 @@ defmodule Spacestore.Repo.Migrations.CreateUsers do
       add :email, :string
       add :password_hash, :string
       add :is_verified, :boolean, default: false, null: false
-      add :token, :string
+      add :token, :text
 
       timestamps()
     end

@@ -5,7 +5,6 @@ defmodule Spacestore.Account do
 
   import Ecto.Query, warn: false
   alias Spacestore.Repo
-
   alias Spacestore.Account.User
 
   @doc """
@@ -55,6 +54,24 @@ defmodule Spacestore.Account do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def store_token(%User{} = user, token) do
+    user
+    |> User.store_token_changeset(%{token: token})
+    |> Repo.update()
+  end
+
+  def login_with_email_pass(email, given_pass) do
+    user = Repo.get_by(User, email: String.downcase(email))
+    cond do
+      user && Argon2.verify_pass(given_pass, user.password_hash) ->
+        {:ok, user}
+      user ->
+        {:error, "Incorrect login credentials"}
+      true ->
+        {:error, :"User not found"}
+    end
   end
 
   @doc """

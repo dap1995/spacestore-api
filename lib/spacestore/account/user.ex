@@ -34,4 +34,9 @@ defmodule Spacestore.Account.User do
         changeset
     end
   end
+
+  def store_token_changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [:token])
+  end
 end

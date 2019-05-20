@@ -21,6 +21,12 @@ defmodule SpacestoreWeb.Schema do
         arg(:password, non_null(:string))
         resolve(&UserResolver.create/2)
       end
+
+      field :login, type: :session do
+        arg(:email, non_null(:string))
+        arg(:password, non_null(:string))
+        resolve(&UserResolver.login/2)
+      end
     end
   end
 end

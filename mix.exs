@@ -44,7 +44,8 @@ defmodule Spacestore.MixProject do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:absinthe_ecto, "~> 0.1.3"},
-      {:argon2_elixir, "~> 2.0.0"}
+      {:argon2_elixir, "~> 2.0.0"},
+      {:guardian, "~> 1.0"}
     ]
   end
 
