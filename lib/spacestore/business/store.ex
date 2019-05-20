@@ -2,6 +2,8 @@ defmodule Spacestore.Business.Store do
   use Ecto.Schema
   import Ecto.Changeset
   alias Spacestore.Account.User
+  alias Spacestore.Business.StoreAddress
+  alias Spacestore.Tracking.StoreCoordinate
 
   schema "stores" do
     field :description, :string
@@ -10,6 +12,8 @@ defmodule Spacestore.Business.Store do
     field :name, :string
     
     belongs_to :owner, User
+    has_one :address, StoreAddress
+    has_one :coordinate, StoreCoordinates
 
     timestamps()
   end
