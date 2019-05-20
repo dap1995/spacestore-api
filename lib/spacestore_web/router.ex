@@ -5,7 +5,10 @@ defmodule SpacestoreWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", SpacestoreWeb do
+  scope "/" do
     pipe_through :api
+
+    forward("/graphql",  Absinthe.Plug, schema: SpacestoreWeb.Schema)
+    forward("/graphiql", Absinthe.Plug.GraphiQL, schema: SpacestoreWeb.Schema)
   end
 end
