@@ -138,4 +138,65 @@ defmodule Spacestore.BusinessTest do
       assert %Ecto.Changeset{} = Business.change_store_address(store_address)
     end
   end
+
+  describe "store_images" do
+    alias Spacestore.Business.StoreImages
+
+    @valid_attrs %{sequence: 42, url: "some url"}
+    @update_attrs %{sequence: 43, url: "some updated url"}
+    @invalid_attrs %{sequence: nil, url: nil}
+
+    def store_images_fixture(attrs \\ %{}) do
+      {:ok, store_images} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Business.create_store_images()
+
+      store_images
+    end
+
+    test "list_store_images/0 returns all store_images" do
+      store_images = store_images_fixture()
+      assert Business.list_store_images() == [store_images]
+    end
+
+    test "get_store_images!/1 returns the store_images with given id" do
+      store_images = store_images_fixture()
+      assert Business.get_store_images!(store_images.id) == store_images
+    end
+
+    test "create_store_images/1 with valid data creates a store_images" do
+      assert {:ok, %StoreImages{} = store_images} = Business.create_store_images(@valid_attrs)
+      assert store_images.sequence == 42
+      assert store_images.url == "some url"
+    end
+
+    test "create_store_images/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Business.create_store_images(@invalid_attrs)
+    end
+
+    test "update_store_images/2 with valid data updates the store_images" do
+      store_images = store_images_fixture()
+      assert {:ok, %StoreImages{} = store_images} = Business.update_store_images(store_images, @update_attrs)
+      assert store_images.sequence == 43
+      assert store_images.url == "some updated url"
+    end
+
+    test "update_store_images/2 with invalid data returns error changeset" do
+      store_images = store_images_fixture()
+      assert {:error, %Ecto.Changeset{}} = Business.update_store_images(store_images, @invalid_attrs)
+      assert store_images == Business.get_store_images!(store_images.id)
+    end
+
+    test "delete_store_images/1 deletes the store_images" do
+      store_images = store_images_fixture()
+      assert {:ok, %StoreImages{}} = Business.delete_store_images(store_images)
+      assert_raise Ecto.NoResultsError, fn -> Business.get_store_images!(store_images.id) end
+    end
+
+    test "change_store_images/1 returns a store_images changeset" do
+      store_images = store_images_fixture()
+      assert %Ecto.Changeset{} = Business.change_store_images(store_images)
+    end
+  end
 end

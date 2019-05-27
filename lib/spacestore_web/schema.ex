@@ -7,6 +7,7 @@ defmodule SpacestoreWeb.Schema do
   alias SpacestoreWeb.StoreResolver
   alias SpacestoreWeb.StoreAddressResolver
   alias SpacestoreWeb.StoreCoordinateResolver
+  alias SpacestoreWeb.StoreImagesResolver
 
   query do
     field :users, list_of(:user) do
@@ -56,6 +57,12 @@ defmodule SpacestoreWeb.Schema do
         resolve(&StoreResolver.create/2)
       end
 
+      field :update_store, type: :store do
+        arg(:id, non_null(:id))
+        arg(:data, :update_store_data)
+        resolve(&StoreResolver.update/2)
+      end
+
       field :create_store_address, type: :store_address do
         arg(:cep, non_null(:string))
         arg(:city, non_null(:string))
@@ -69,12 +76,39 @@ defmodule SpacestoreWeb.Schema do
         resolve(&StoreAddressResolver.create/2)
       end
 
+      field :update_store_address, type: :store_address do
+        arg(:id, non_null(:id))
+        arg(:data, :update_store_address_data)
+        resolve(&StoreResolver.update_address/2)
+      end
+
+      field :update_store_coordinate, type: :store_coordinate do
+        arg(:id, non_null(:id))
+        arg(:data, :update_store_coordinate_data)
+        resolve(&StoreResolver.update_coordinate/2)
+      end
+
+      field :update_store_coordinate, type: :store_coordinate do
+        arg(:id, non_null(:id))
+        arg(:sequence, non_null(:integer))
+        arg(:data, :update_store_image_data)
+        resolve(&StoreResolver.update_store_images/2)
+      end
+
       field :create_store_coordinate, type: :store_coordinate do
         arg(:latitude, non_null(:float))
         arg(:longitude, non_null(:float))
         arg(:store_id, non_null(:id))
         
         resolve(&StoreCoordinateResolver.create/2)
+      end
+
+      field :create_store_image, type: :store_images do
+        arg(:url, non_null(:string))
+        arg(:sequence, non_null(:integer))
+        arg(:store_id, non_null(:id))
+        
+        resolve(&StoreImagesResolver.create/2)
       end
 
       field :sign_out, type: :user do

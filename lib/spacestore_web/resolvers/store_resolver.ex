@@ -12,7 +12,7 @@ defmodule SpacestoreWeb.StoreResolver do
   end
 
   def stores_by_distance(args, %{context: %{current_user: _current_user}}) do
-    stores = Business.list_stores_by_distance(args, [:owner, :address, :coordinate])
+    stores = Business.list_stores_by_distance(args, [:owner, :address, :coordinate, :images])
     {:ok, stores}
   end
 
@@ -29,6 +29,26 @@ defmodule SpacestoreWeb.StoreResolver do
 
   def create(args,  %{context: %{current_user: current_user}}) do
     case Business.create_store(args, current_user) do
+      {:ok, store} ->
+        {:ok, store}
+      {:error, error} ->
+        {:error, ErrorHelpers.error_from_changeset_to_string(error)}
+      error ->
+        {:error, "could not create store"}
+    end
+  end
+
+  def update(args, %{context: %{current_user: current_user}}) do
+    store = Business.get_store(args.id)
+    cond do
+      store == nil -> {:error, "Store not found"}
+      store.owner_id == current_user.id -> update_store(store, args)
+      true -> {:error, "User doesn't have this resource associated"}
+    end
+  end
+
+  def update_store(store, args) do
+    case Business.update_store(store, args.data) do
       {:ok, store} ->
         {:ok, store}
       {:error, error} ->

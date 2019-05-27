@@ -2,7 +2,7 @@ defmodule Spacestore.Business.Store do
   use Ecto.Schema
   import Ecto.Changeset
   alias Spacestore.Account.User
-  alias Spacestore.Business.StoreAddress
+  alias Spacestore.Business.{StoreAddress, StoreImages}
   alias Spacestore.Tracking.StoreCoordinate
 
   schema "stores" do
@@ -14,6 +14,7 @@ defmodule Spacestore.Business.Store do
     belongs_to :owner, User
     has_one :address, StoreAddress
     has_one :coordinate, StoreCoordinate
+    has_many :images, StoreImages
 
     timestamps()
   end

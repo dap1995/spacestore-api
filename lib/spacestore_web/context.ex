@@ -19,7 +19,7 @@ defmodule SpacestoreWeb.Context do
 
   defp build_context(conn) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-        {:ok, claims} = Spacestore.Guardian.decode_and_verify(token),
+        {:ok, claims} <- Spacestore.Guardian.decode_and_verify(token),
         {:ok, current_user} <- get_user(claims["sub"])
     do
       {:ok, %{current_user: current_user, token: token}}

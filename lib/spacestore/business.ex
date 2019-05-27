@@ -264,4 +264,100 @@ defmodule Spacestore.Business do
   def change_store_address(%StoreAddress{} = store_address) do
     StoreAddress.changeset(store_address, %{})
   end
+
+  alias Spacestore.Business.StoreImages
+
+  @doc """
+  Returns the list of store_images.
+
+  ## Examples
+
+      iex> list_store_images()
+      [%StoreImages{}, ...]
+
+  """
+  def list_store_images do
+    Repo.all(StoreImages)
+  end
+
+  @doc """
+  Gets a single store_images.
+
+  Raises `Ecto.NoResultsError` if the Store images does not exist.
+
+  ## Examples
+
+      iex> get_store_images!(123)
+      %StoreImages{}
+
+      iex> get_store_images!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_store_images!(id), do: Repo.get!(StoreImages, id)
+
+  @doc """
+  Creates a store_images.
+
+  ## Examples
+
+      iex> create_store_images(%{field: value})
+      {:ok, %StoreImages{}}
+
+      iex> create_store_images(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_store_images(attrs \\ %{}) do
+    %StoreImages{}
+    |> StoreImages.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a store_images.
+
+  ## Examples
+
+      iex> update_store_images(store_images, %{field: new_value})
+      {:ok, %StoreImages{}}
+
+      iex> update_store_images(store_images, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_store_images(%StoreImages{} = store_images, attrs) do
+    store_images
+    |> StoreImages.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a StoreImages.
+
+  ## Examples
+
+      iex> delete_store_images(store_images)
+      {:ok, %StoreImages{}}
+
+      iex> delete_store_images(store_images)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_store_images(%StoreImages{} = store_images) do
+    Repo.delete(store_images)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking store_images changes.
+
+  ## Examples
+
+      iex> change_store_images(store_images)
+      %Ecto.Changeset{source: %StoreImages{}}
+
+  """
+  def change_store_images(%StoreImages{} = store_images) do
+    StoreImages.changeset(store_images, %{})
+  end
 end
