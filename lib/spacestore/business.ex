@@ -79,7 +79,7 @@ defmodule Spacestore.Business do
   """
   def list_stores do
     result = Repo.all(Store)
-      |> Repo.preload([:owner, :address, :coordinate])
+      |> Repo.preload([:owner, :address, :coordinate, :images])
     IO.inspect result
     result
   end

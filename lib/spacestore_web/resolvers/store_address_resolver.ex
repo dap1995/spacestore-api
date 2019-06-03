@@ -32,7 +32,7 @@ defmodule SpacestoreWeb.StoreAddressResolver do
       store_address = Business.get_store_address!(args.id)
       store = Business.get_store!(store_address.store_id)
       cond do
-        store.owner_id == current_user.id -> update_store_address(args.data)
+        store.owner_id == current_user.id -> update_store_address(store_address, args.data)
         true -> {:error, "User doesn't have this resource associated"}
       end
     rescue
@@ -40,8 +40,8 @@ defmodule SpacestoreWeb.StoreAddressResolver do
     end
   end
 
-  defp update_store_address(args) do
-    case Business.update_store_address(args) do
+  defp update_store_address(store_address, args) do
+    case Business.update_store_address(store_address, args) do
       {:ok, store_address} ->
         {:ok, store_address}
       {:error, error} ->

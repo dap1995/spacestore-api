@@ -26,4 +26,32 @@ defmodule SpacestoreWeb.StoreCoordinateResolver do
         {:error, "Could not create address"}
     end
   end
+
+  def update(args, %{context: %{current_user: current_user}}) do
+    try do
+      store_coordinate = Tracking.get_store_coordinate!(args.id)
+      store = Business.get_store!(store_coordinate.store_id)
+      cond do
+        store.owner_id == current_user.id -> update_store_coordinate(store_coordinate, args.data)
+        true -> {:error, "User doesn't have this resource associated"}
+      end
+    rescue
+      e in Ecto.NoResultsError -> {:error, "Store or coordinate not found"}
+    end
+  end
+
+  def update(_args, _info) do
+    {:error, "Not Authorized"}
+  end
+
+  defp update_store_coordinate(store_coordinate, args) do
+    case Tracking.update_store_coordinate(store_coordinate, args) do
+      {:ok, store_coordinate} ->
+        {:ok, store_coordinate}
+      {:error, error} ->
+        {:error, ErrorHelpers.error_from_changeset_to_string(error)}
+      error ->
+        {:error, "Could not create coordinate"}
+    end
+  end
 end

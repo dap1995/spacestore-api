@@ -79,20 +79,20 @@ defmodule SpacestoreWeb.Schema do
       field :update_store_address, type: :store_address do
         arg(:id, non_null(:id))
         arg(:data, :update_store_address_data)
-        resolve(&StoreResolver.update_address/2)
+        resolve(&StoreAddressResolver.update/2)
       end
 
       field :update_store_coordinate, type: :store_coordinate do
         arg(:id, non_null(:id))
         arg(:data, :update_store_coordinate_data)
-        resolve(&StoreResolver.update_coordinate/2)
+        resolve(&StoreCoordinateResolver.update/2)
       end
 
-      field :update_store_coordinate, type: :store_coordinate do
+      field :update_store_image, type: :store_images do
         arg(:id, non_null(:id))
         arg(:sequence, non_null(:integer))
         arg(:data, :update_store_image_data)
-        resolve(&StoreResolver.update_store_images/2)
+        resolve(&StoreImagesResolver.update/2)
       end
 
       field :create_store_coordinate, type: :store_coordinate do
