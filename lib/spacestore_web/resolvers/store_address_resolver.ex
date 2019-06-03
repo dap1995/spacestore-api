@@ -50,4 +50,21 @@ defmodule SpacestoreWeb.StoreAddressResolver do
         {:error, "Could not create address"}
     end
   end
+
+  def delete(args, %{context: %{current_user: current_user}}) do
+    try do
+      store_address = Business.get_store_address!(args.id)
+      store = Business.get_store!(store_address.store_id)
+      cond do
+        store.owner_id == current_user.id -> Business.delete_store_address(store_address)
+        true -> {:error, "User doesn't have this resource associated"}
+      end
+    rescue
+      e in Ecto.NoResultsError -> {:error, "Store or coordinate not found"}
+    end
+  end
+
+  def delete(_args, _info) do
+    {:error, "Not Authorized"}
+  end
 end

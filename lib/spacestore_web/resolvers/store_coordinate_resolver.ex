@@ -54,4 +54,21 @@ defmodule SpacestoreWeb.StoreCoordinateResolver do
         {:error, "Could not create coordinate"}
     end
   end
+
+  def delete(args, %{context: %{current_user: current_user}}) do
+    try do
+      store_coordinate = Tracking.get_store_coordinate!(args.id)
+      store = Business.get_store!(store_coordinate.store_id)
+      cond do
+        store.owner_id == current_user.id -> Tracking.delete_store_coordinate(store_coordinate)
+        true -> {:error, "User doesn't have this resource associated"}
+      end
+    rescue
+      e in Ecto.NoResultsError -> {:error, "Store or coordinate not found"}
+    end
+  end
+
+  def delete(_args, _info) do
+    {:error, "Not Authorized"}
+  end
 end

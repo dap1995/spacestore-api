@@ -111,6 +111,26 @@ defmodule SpacestoreWeb.Schema do
         resolve(&StoreImagesResolver.create/2)
       end
 
+      field :delete_store_coordinate, type: :store_coordinate do
+        arg(:id, non_null(:id))
+        resolve(&StoreCoordinateResolver.delete/2)
+      end
+
+      field :delete_store_address, type: :store_address do
+        arg(:id, non_null(:id))
+        resolve(&StoreAddressResolver.delete/2)
+      end
+
+      field :delete_store_image, type: :store_images do
+        arg(:id, non_null(:id))
+        resolve(&StoreImagesResolver.delete/2)
+      end
+
+      field :delete_store, type: :store do
+        arg(:id, non_null(:id))
+        resolve(&StoreResolver.delete/2)
+      end
+
       field :sign_out, type: :user do
         resolve(&UserResolver.logout/2)
       end

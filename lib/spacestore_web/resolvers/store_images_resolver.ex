@@ -53,4 +53,21 @@ defmodule SpacestoreWeb.StoreImagesResolver do
         {:error, "Could not update image"}
     end
   end
+
+  def delete(args, %{context: %{current_user: current_user}}) do
+    try do
+      store_image = Business.get_store_images!(args.id)
+      store = Business.get_store!(store_image.store_id)
+      cond do
+        store.owner_id == current_user.id -> Business.delete_store_images(store_image)
+        true -> {:error, "User doesn't have this resource associated"}
+      end
+    rescue
+      e in Ecto.NoResultsError -> {:error, "Store or image not found"}
+    end
+  end
+
+  def delete(_args, _info) do
+    {:error, "Not Authorized"}
+  end
 end

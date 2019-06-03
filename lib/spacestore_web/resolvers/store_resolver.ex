@@ -61,4 +61,20 @@ defmodule SpacestoreWeb.StoreResolver do
   def create(_args, _info) do
     {:error, "Not Authorized"}
   end
+
+  def delete(args, %{context: %{current_user: current_user}}) do
+    try do
+      store = Business.get_store!(args.id)
+      cond do
+        store.owner_id == current_user.id -> Business.delete_store(store)
+        true -> {:error, "User doesn't have this resource associated"}
+      end
+    rescue
+      e in Ecto.NoResultsError -> {:error, "Store not found"}
+    end
+  end
+
+  def delete(_args, _info) do
+    {:error, "Not Authorized"}
+  end
 end
